@@ -88,7 +88,7 @@ uint8_t ltm_mode = 2;
 
 int fd;
 FILE * fp_out;
-bool debug = true;
+bool debug = false;
 /*
 uint16_t uav_rc1_raw = 0;
 uint16_t uav_rc2_raw = 0;

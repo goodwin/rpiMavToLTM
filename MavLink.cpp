@@ -184,7 +184,7 @@ void read_mavlink(){
                     //if (uav_heading >= 180 ) uav_heading = -360+uav_heading; //convert from 0-360 to -180/180°
                 }
                 break;
-
+/*
             case MAVLINK_MSG_ID_RC_CHANNELS_RAW:
                 {
 
@@ -201,7 +201,7 @@ void read_mavlink(){
                         ltm_Sframe_chg = millis();
                 }
                 break;
- 
+*/
             case MAVLINK_MSG_ID_RC_CHANNELS:
                 {
                    uav_rc9_raw = mavlink_msg_rc_channels_get_chan9_raw(&msg);

@@ -38,7 +38,7 @@
 #endif
 
 char debug_file[] = "/tmp/mav_to_ltm.log";
-int input_baud = 115200;
+int input_baud = 57600;
 int ltm_delay = 50;
 
 #ifdef INCLUDE_LED
@@ -138,10 +138,10 @@ extern "C" void* led(void* argC)
 {
     while(1)
     {
-//        led_strip_ptr->rc8 = uav_rc10_raw;
-//        led_strip_ptr->climb_rate = uav_climb_rate;
-//        led_strip_ptr->custom_mode = uav_flightmode;
-//        led_strip_ptr->process_10_millisecond();
+        led_strip_ptr->rc8 = uav_rc10_raw;
+        led_strip_ptr->climb_rate = uav_climb_rate;
+        led_strip_ptr->custom_mode = uav_flightmode;
+        led_strip_ptr->process_10_millisecond();
         delay(led_delay);
     }
 }
