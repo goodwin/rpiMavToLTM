@@ -34,49 +34,25 @@
 #include "LightTelemetry.cpp"
 
 #ifdef INCLUDE_LED
-#include "ws2811.h"
+#include "Led.cpp"
 #endif
-
-#define ARRAY_SIZE(stuff)                        (sizeof(stuff) / sizeof(stuff[0]))
-
-#define TARGET_FREQ                              WS2811_TARGET_FREQ
-#define GPIO_PIN                                 18
-#define DMA                                      5
-
-#define WIDTH                                    32
-#define HEIGHT                                   1
-#define LED_COUNT                                (WIDTH * HEIGHT)
 
 char debug_file[] = "/tmp/mav_to_ltm.log";
 int input_baud = 115200;
 int ltm_delay = 50;
-int led_delay = 200;
 
-ws2811_t ledstring =
-{
-    nullptr,
-    nullptr,
-    TARGET_FREQ, //freq
-    DMA, //dmanum
-    { //channel
-        {
-            GPIO_PIN, //gpionum
-            LED_COUNT, //count
-            0, //invert
-            255, //brightness
-        },
-        {
-            0,
-            0,
-            0,
-            0,
-        }
-    }
-};
-
-ws2811_led_t matrix[WIDTH][HEIGHT];
+#ifdef INCLUDE_LED
+int led_delay = 10;
+LedController* led_strip_ptr;
+#endif
 
 void setup() {
+    if(debug)
+    {
+        fp_out=fopen(debug_file, "w+");
+        fputs("Setup start!\n", fp_out);
+        fflush(fp_out);
+    }
     if((fd = serialOpen ("/dev/ttyAMA0", input_baud)) < 0 )
          perror("device not opened \n");
 
@@ -87,14 +63,49 @@ void setup() {
       enable_frame_request = 1;
       messageCounter = 50;
     }
-    set_port(fd);
+
+#ifdef INCLUDE_LED
+    ws2811_init(&ledstring);
+
+    for (int x = 0; x < LED_MAX_BULBS; x++)
+        {
+            for (int y = 0; y < LED_MAX_STRIPS; y++)
+            {
+                ledstring.channel[0].leds[(y * 8) + x] = 0x00000;
+            }
+        }
+    ws2811_render(&ledstring);
+
+    led_strip_ptr = new LedController();
+#endif
+
     if(debug)
     {
-        fp_out=fopen(debug_file, "w+");
         fputs("Setup done!\n", fp_out);
         fflush(fp_out);
     }
+
 }
+
+#ifdef INCLUDE_LED
+void leds_render(bool show)
+{
+    for (int x = 0; x < LED_MAX_BULBS; x++)
+    {
+        for (int y = 0; y < LED_MAX_STRIPS; y++)
+        {
+            ledstring.channel[0].leds[(y * LED_MAX_BULBS) + x] = leds[x][y];
+        }
+    }
+   if(show)
+   {
+     if (ws2811_render(&ledstring))
+     {
+
+     }
+   }
+}
+#endif
 
 extern "C" void* mav(void* argA)
 {
@@ -127,25 +138,11 @@ extern "C" void* led(void* argC)
 {
     while(1)
     {
-//        printf("send ltm\n");
-//printf("%i, %i, %i, %i, %i\n", uav_roll, uav_pitch, uav_bat, uav_flightmode, uav_arm);
-//        set_led();
+//        led_strip_ptr->rc8 = uav_rc10_raw;
+//        led_strip_ptr->climb_rate = uav_climb_rate;
+//        led_strip_ptr->custom_mode = uav_flightmode;
+//        led_strip_ptr->process_10_millisecond();
         delay(led_delay);
-    }
-}
-#endif
-
-#ifdef INCLUDE_LED
-void matrix_render(void)
-{
-    int x, y;
-
-    for (x = 0; x < WIDTH; x++)
-    {
-        for (y = 0; y < HEIGHT; y++)
-        {
-            ledstring.channel[0].leds[(y * WIDTH) + x] = matrix[x][y];
-        }
     }
 }
 #endif
@@ -153,13 +150,6 @@ void matrix_render(void)
 int main(int argc, char* argv[])
 {
     int ret = 0;
-
-#ifdef INCLUDE_LED
-    if (ws2811_init(&ledstring))
-    {
-        return -1;
-    }
-#endif
 
     pthread_t thread1, thread2, thread3;
     setup();
@@ -181,6 +171,8 @@ int main(int argc, char* argv[])
     for (;;) {
       delay(1);
     }
+
+    ws2811_fini(&ledstring);
 
     serialClose(fd);
 

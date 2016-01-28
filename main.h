@@ -12,8 +12,42 @@
 //
 
 #define INCLUDE_LED
-#define PASSIVEMODE 0
+#define PASSIVEMODE 1
 typedef uint8_t byte;
+
+#ifdef INCLUDE_LED
+#include "ws2811.h"
+
+#define TARGET_FREQ                              WS2811_TARGET_FREQ
+#define GPIO_PIN                                 18
+#define DMA                                      5
+
+#define LED_MAX_STRIPS              4
+#define LED_MAX_BULBS               8
+#define LED_MAX_STRIPS              4
+#define LED_MAX_BULBS               8
+#define LED_MAX_STRIP_STATES        10
+#define LED_MAX_PATTERNS_PER_STRIP  25
+#define LED_DEFAULT_STATE_TIME      200
+#define LED_COUNT                                (LED_MAX_BULBS * LED_MAX_STRIPS)
+
+ws2811_t ledstring = {
+    NULL, //*device
+    NULL, //*rpi_hw
+    TARGET_FREQ, //freq
+    DMA, //dmanum
+    { //channel
+      {
+        GPIO_PIN, //gpionum
+        0, //invert
+        LED_COUNT, //led_count
+        255, //brightness
+      }
+    }
+  };
+ws2811_led_t leds[LED_MAX_BULBS][LED_MAX_STRIPS];
+void leds_render(bool show = true);
+#endif
 
 //int          softserial_delay = (int)round(10000000.0f/(OUTPUT_BAUD)); // time to wait between each byte sent.
 //boolean      ltm_counter = false;

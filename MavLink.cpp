@@ -28,12 +28,6 @@ static int packet_drops = 0;
 static int parse_error = 0;
 mavlink_message_t msg; 
 mavlink_status_t status;
-int fd2;
-
-void set_port(int ser)
-{
-  fd2 = ser;
-}
 
 void start_mavlink_packet_type(mavlink_message_t* msg_ptr, uint8_t stream_id, uint16_t rate) {
   uint16_t byte_length;
@@ -43,7 +37,7 @@ void start_mavlink_packet_type(mavlink_message_t* msg_ptr, uint8_t stream_id, ui
   byte_length = mavlink_msg_to_send_buffer(buf, msg_ptr);
   for(int i = 0; i < byte_length; i++)
   {
-    serialPutchar(fd2, buf[i]);
+    serialPutchar(fd, buf[i]);
   }
   delay(10);
 }
@@ -71,14 +65,14 @@ void read_mavlink(){
 
     if (!PASSIVEMODE) {
       if( (messageCounter >= 20 && mavlink_active) || enable_frame_request ) {
-//        request_mavlink_rates(&msg);
+        request_mavlink_rates(&msg);
         enable_frame_request = 0;
       }
     }
 
     //grabing data 
-    while(serialDataAvail(fd2) > 0) { 
-        uint8_t c = serialGetchar(fd2);
+    while(serialDataAvail(fd) > 0) { 
+        uint8_t c = serialGetchar(fd);
 
         //trying to grab msg  
         //if(mavlink_parse_char(MAVLINK_COMM_0, c, &msg, &status)) {
