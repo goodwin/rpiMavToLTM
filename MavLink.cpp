@@ -156,6 +156,8 @@ void read_mavlink(){
                     uav_gpsheading = (int16_t) mavlink_msg_gps_raw_int_get_cog(&msg);
                     if(ltm_mode == 2)
                         ltm_Gframe_chg = millis();
+                    if(ltm_mode == 2)
+                        ltm_Cframe_chg = millis();
                 }
                 break; 
             case MAVLINK_MSG_ID_VFR_HUD:
@@ -212,6 +214,8 @@ void read_mavlink(){
 //                   if (uav_rc10_raw >= UINT16_MAX) {uav_rc10_raw = -1;}
 //                   if (uav_rc11_raw >= UINT16_MAX) {uav_rc11_raw = -1;}
 //                   if (uav_rc12_raw >= UINT16_MAX) {uav_rc12_raw = -1;}
+                    if(ltm_mode == 2)
+                        ltm_Cframe_chg = millis();
                 }
                 break;
             }
