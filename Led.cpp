@@ -307,6 +307,23 @@ LedController::LedController() {
   add_pattern(9, RIGHT_REAR, led_pattern); 
   add_pattern(9, LEFT_FRONT, led_pattern);  
   add_pattern(9, LEFT_REAR, led_pattern);  
+
+  /////////////////////////////////////////////////////////////////////////
+  // Pattern 10 - Rainbow
+  /////////////////////////////////////////////////////////////////////////
+  led_pattern = new LedStripPattern();
+  led_pattern->add_strip_state(red, orange, yellow, green, cyan, blue, purple, pink, 100);
+  led_pattern->add_strip_state(pink, red, orange, yellow, green, cyan, blue, purple, 100);
+  led_pattern->add_strip_state(purple, pink, red, orange, yellow, green, cyan, blue, 100);
+  led_pattern->add_strip_state(blue, purple, pink, red, orange, yellow, green, cyan, 100);
+  led_pattern->add_strip_state(cyan, blue, purple, pink, red, orange, yellow, green, 100);
+  led_pattern->add_strip_state(green, cyan, blue, purple, pink, red, orange, yellow, 100);
+  led_pattern->add_strip_state(yellow, green, cyan, blue, purple, pink, red, orange, 100);
+  led_pattern->add_strip_state(orange, yellow, green, cyan, blue, purple, pink, red, 100);
+  add_pattern(10, RIGHT_FRONT, led_pattern);
+  add_pattern(10, RIGHT_REAR, led_pattern);
+  add_pattern(10, LEFT_FRONT, led_pattern);
+  add_pattern(10, LEFT_REAR, led_pattern);
 }
 
 LedBulbColor::LedBulbColor(uint8_t red_param, uint8_t green_param, uint8_t blue_param) {
@@ -398,11 +415,11 @@ void LedController::process_10_millisecond() {
         pattern_index = 5;
         break;
       default:
-        pattern_index = 0;
+        pattern_index = 2;
         break;
     }
   }else{
-    pattern_index = 2;
+    pattern_index = 10;
   }
 
   uint32_t current_time = millis();                                                 // make sure all LEDs start at the same time
