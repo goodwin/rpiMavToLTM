@@ -430,9 +430,9 @@ void LedController::process_10_millisecond() {
       if(current_time >= strip_ptr->current_state_expiry_time) { 
         if(reverse)
         {
-//          strip_ptr->current_state = ((strip_ptr->current_state - 1 + pattern->strip_state_count) % pattern->strip_state_count);
+          strip_ptr->current_state = ((strip_ptr->current_state - 1 + pattern->strip_state_count) % pattern->strip_state_count);
         } else {
-//          strip_ptr->current_state = ((strip_ptr->current_state + 1) % pattern->strip_state_count);
+          strip_ptr->current_state = ((strip_ptr->current_state + 1) % pattern->strip_state_count);
         }
         change_led_state(i, pattern, strip_ptr, current_time);
       }
