@@ -57,10 +57,13 @@ LedController::LedController() {
   LedBulbColor* green = new LedBulbColor(0, 255, 0);
   LedBulbColor* blue = new LedBulbColor(0, 0, 255);
   LedBulbColor* yellow = new LedBulbColor(255, 255, 0);
-  //LedBulbColor* cyan = new LedBulbColor(0, 255, 255);
-  //LedBulbColor* magenta = new LedBulbColor(255, 0, 255);
+  LedBulbColor* cyan = new LedBulbColor(0, 255, 255); //lightblue
+  LedBulbColor* magenta = new LedBulbColor(255, 0, 255);
   LedBulbColor* off = new LedBulbColor(0, 0, 0);
   LedBulbColor* white = new LedBulbColor(255, 255, 255);
+  LedBulbColor* orange = new LedBulbColor(255, 128, 0);
+  LedBulbColor* purple = new LedBulbColor(128, 0, 128);
+  LedBulbColor* pink = new LedBulbColor(255, 0, 128);
 
   /////////////////////////////////////////////////////////////////////////
   // Pattern 0
