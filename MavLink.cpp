@@ -189,7 +189,6 @@ void read_mavlink(){
                 {
 
                    uav_rssi      = mavlink_msg_rc_channels_raw_get_rssi(&msg);
-/*
                    uav_rc1_raw = mavlink_msg_rc_channels_raw_get_chan1_raw(&msg);
                    uav_rc2_raw = mavlink_msg_rc_channels_raw_get_chan2_raw(&msg);
                    uav_rc3_raw = mavlink_msg_rc_channels_raw_get_chan3_raw(&msg);
@@ -198,7 +197,6 @@ void read_mavlink(){
                    uav_rc6_raw = mavlink_msg_rc_channels_raw_get_chan6_raw(&msg);
                    uav_rc7_raw = mavlink_msg_rc_channels_raw_get_chan7_raw(&msg);
                    uav_rc8_raw = mavlink_msg_rc_channels_raw_get_chan8_raw(&msg);
-*/
                     if(ltm_mode == 2)
                         ltm_Sframe_chg = millis();
                 }
