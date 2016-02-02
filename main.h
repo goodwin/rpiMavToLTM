@@ -58,6 +58,7 @@ uint8_t      uav_satellites_visible = 0;     // number of satelites
 uint8_t      uav_fix_type = 0;               // GPS lock 0-1=no fix, 2=2D, 3=3D
 int32_t      uav_alt = 0;                    // altitude (cm)
 int          uav_groundspeed = 0;            // ground speed
+uint16_t     uav_hdop = 0;                   // gps hdop*100
 int16_t      uav_pitch = 0;                  // attitude pitch
 int16_t      uav_roll = 0;                   // attitude roll
 int16_t      uav_heading = 0;                // attitude heading

@@ -152,6 +152,7 @@ void read_mavlink(){
                     uav_alt = (int32_t)round(mavlink_msg_gps_raw_int_get_alt(&msg)/10.0f); // from mm to cm
                     uav_fix_type = (uint8_t) mavlink_msg_gps_raw_int_get_fix_type(&msg);
                     uav_satellites_visible = (uint8_t) mavlink_msg_gps_raw_int_get_satellites_visible(&msg);
+                    uav_hdop = (uint16_t)mavlink_msg_gps_raw_int_get_eph(&msg);
                     uav_gpsheading = (int16_t) mavlink_msg_gps_raw_int_get_cog(&msg);
                     if(ltm_mode == 2)
                         ltm_Gframe_chg = millis();
@@ -207,10 +208,10 @@ void read_mavlink(){
                    uav_rc10_raw = mavlink_msg_rc_channels_get_chan10_raw(&msg);
                    uav_rc11_raw = mavlink_msg_rc_channels_get_chan11_raw(&msg);
                    uav_rc12_raw = mavlink_msg_rc_channels_get_chan12_raw(&msg);
-                   if (uav_rc9_raw >= UINT16_MAX)  {uav_rc9_raw = -1;}
-                   if (uav_rc10_raw >= UINT16_MAX) {uav_rc10_raw = -1;}
-                   if (uav_rc11_raw >= UINT16_MAX) {uav_rc11_raw = -1;}
-                   if (uav_rc12_raw >= UINT16_MAX) {uav_rc12_raw = -1;}
+//                   if (uav_rc9_raw >= UINT16_MAX)  {uav_rc9_raw = -1;}
+//                   if (uav_rc10_raw >= UINT16_MAX) {uav_rc10_raw = -1;}
+//                   if (uav_rc11_raw >= UINT16_MAX) {uav_rc11_raw = -1;}
+//                   if (uav_rc12_raw >= UINT16_MAX) {uav_rc12_raw = -1;}
                 }
                 break;
             }

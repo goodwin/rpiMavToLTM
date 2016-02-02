@@ -56,10 +56,10 @@ static bool send_LTM_Packet(uint8_t *LTPacket, uint8_t LTPacket_size)
             if (millis() - frame_timer >= 100) {
             // drop the whole frame, it's too old. Will resend a fresh one.
                packet_dropped = true;
-               
+
                break;
             }
-        
+
         }
         if (byte_dropped) {
             i--; //resend dropped byte  
@@ -166,26 +166,32 @@ static void send_LTM_Aframe()
 static void send_LTM_Cframe() 
 {
 
-    uint8_t LTBuff[LTM_AFRAME_SIZE];
+    uint8_t LTBuff[LTM_CFRAME_SIZE];
     
-    //A Frame: $T(2 bytes)A(1byte)PITCH(2 bytes)ROLL(2bytes)HEADING(2bytes)CRC(xor,1byte)
+    //A Frame: $T(2 bytes)C(1byte)uav_satellites_visible(1 byte)uav_fix_type(1byte)uav_hdop(2bytes)uav_rc9_raw(2bytes)uav_rc10_raw(2bytes)uav_rc11_raw(2bytes)uav_rc12_raw(2bytes)
     //START
     LTBuff[0]=0x24; //$
     LTBuff[1]=0x54; //T
     //FRAMEID
     LTBuff[2]=0x43; //C
     //PAYLOAD
-/*
-    LTBuff[3]=(uav_pitch >> 8*0) & 0xFF;
-    LTBuff[4]=(uav_pitch >> 8*1) & 0xFF;
-    LTBuff[5]=(uav_roll >> 8*0) & 0xFF;
-    LTBuff[6]=(uav_roll >> 8*1) & 0xFF;
-    LTBuff[7]=(uav_heading >> 8*0) & 0xFF;
-    LTBuff[8]=(uav_heading >> 8*1) & 0xFF;
-    if (send_LTM_Packet(LTBuff,LTM_AFRAME_SIZE) == true) {
+
+    LTBuff[3]=(uav_satellites_visible >> 8*0) & 0xFF;
+    LTBuff[4]=(uav_fix_type >> 8*0) & 0xFF;
+    LTBuff[5]=(uav_hdop >> 8*0) & 0xFF;
+    LTBuff[6]=(uav_hdop >> 8*1) & 0xFF;
+    LTBuff[7]=(uav_rc9_raw >> 8*0) & 0xFF;
+    LTBuff[8]=(uav_rc9_raw >> 8*1) & 0xFF;
+    LTBuff[9]=(uav_rc10_raw >> 8*0) & 0xFF;
+    LTBuff[10]=(uav_rc10_raw >> 8*1) & 0xFF;
+    LTBuff[11]=(uav_rc11_raw >> 8*0) & 0xFF;
+    LTBuff[12]=(uav_rc11_raw >> 8*1) & 0xFF;
+    LTBuff[13]=(uav_rc12_raw >> 8*0) & 0xFF;
+    LTBuff[14]=(uav_rc12_raw >> 8*1) & 0xFF;
+    if (send_LTM_Packet(LTBuff,LTM_CFRAME_SIZE) == true) {
     ltm_scheduler++;
     }
-*/
+
 }
 
 static void send_LTM() {

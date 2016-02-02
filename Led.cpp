@@ -374,37 +374,7 @@ void LedController::change_led_state(int strip_number, LedStripPattern* pattern,
 void LedController::process_10_millisecond() {
   int8_t pattern_index = 0;
   uint8_t reverse = 0;
-  
-  if(rc8 < 1050) {
-    pattern_index = 0;
-  } else if(rc8 >= 1050 && rc8 < 1150) {
-    pattern_index = 1;
-  } else if(rc8 >= 1150 && rc8 < 1250) {
-    pattern_index = 2;
-  } else if(rc8 >= 1250 && rc8 < 1350) {
-    pattern_index = 3;
-    if(climb_rate <= 0.05) {
-      reverse = 1;
-    }
-  } else if(rc8 >= 1350 && rc8 < 1450) {
-    pattern_index = 4;
-  } else if(rc8 >= 1450 && rc8 < 1550) {
-    pattern_index = 5;
-    if(climb_rate <= 0.05) {
-      reverse = 1;
-    }
-  }  else if(rc8 >= 1550 && rc8 < 1650) {
-    pattern_index = 6;
-    if(climb_rate <= 0.05) {
-      reverse = 1;
-    }  
-  }  else if(rc8 >= 1650 && rc8 < 1750) {
-    pattern_index = 7;
-  }  else if(rc8 >= 1750 && rc8 < 1850) {
-    pattern_index = 8;
-  }  else if(rc8 >= 1850 && rc8 < 1950) {
-    pattern_index = 9;  
-  }  else if(rc8 >= 1950) {
+  if(uav_arm) {
     switch(custom_mode) {
       case 2:                           // stabilize
         pattern_index = 4;
@@ -428,6 +398,8 @@ void LedController::process_10_millisecond() {
         pattern_index = 0;
         break;
     }
+  }else{
+    pattern_index = 2;
   }
 
   uint32_t current_time = millis();                                                 // make sure all LEDs start at the same time
